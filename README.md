@@ -11,7 +11,7 @@ Asistente para una empresa manufacturera de equipo electro-médico. Responde pre
 - [x] Paso 1: FastAPI + MySQL en Docker Compose, datos de ejemplo, usuario de solo lectura
 - [x] Paso 2: RAG (chunking por sección, embeddings con Ollama, ChromaDB, citas de fuente)
 - [x] Paso 3: Agente SQL con validación en tres capas y reintento con el error
-- [ ] Paso 4: Agente con tool calling
+- [x] Paso 4: Agente con tool calling que encadena documentos y base de datos
 - [ ] Paso 5: Demo y diagrama
 
 ## Cómo correrlo
@@ -100,6 +100,36 @@ Preguntas para probar:
 - ¿Qué pedidos abiertos hay de productos que están por debajo de su stock mínimo?
 - ¿Qué órdenes de producción están retenidas y por qué defecto?
 - ¿Cuántas piezas ha pedido cada cliente en total?
+
+## Agente con tool calling (paso 4)
+
+`POST /agente/preguntar` — un solo punto de entrada. El modelo decide qué herramientas usar:
+
+| Herramienta | Qué hace | Cuándo la usa |
+|---|---|---|
+| `buscar_documentos` | Búsqueda semántica en ChromaDB (paso 2) | Reglas, procedimientos, políticas |
+| `consultar_base_datos` | Text-to-SQL con las tres capas (paso 3) | Datos actuales: stock, pedidos, órdenes |
+
+Cómo funciona el ciclo:
+
+1. El modelo recibe la pregunta y la descripción de las dos herramientas.
+2. Si decide usar una, devuelve una *tool call* (nombre y argumentos); el código la ejecuta y le regresa el resultado.
+3. Con ese resultado decide: ¿otra herramienta, o ya puede responder?
+4. Tope de 6 llamadas para que nunca entre en un ciclo infinito. Si una herramienta falla, el error se le pasa al modelo en lugar de tumbar la API.
+
+La respuesta incluye `pasos`: qué herramienta usó, con qué argumentos y qué obtuvo. Así se puede auditar cómo llegó a la respuesta.
+
+**Por qué un agente y no solo RAG:** la pregunta *"¿Qué hago con la orden retenida de bombas de infusión?"* necesita tres pasos encadenados, que un RAG de una sola búsqueda no puede hacer:
+
+1. Base de datos → la orden 4 está retenida por flujo fuera de tolerancia (+6%).
+2. Manual MQ-01 → el flujo fuera de tolerancia es un defecto **crítico**.
+3. Procedimiento PR-07 → con un defecto crítico: cuarentena, aviso en 4 horas, causa raíz en 5 días y decisión del comité.
+
+Preguntas para probar:
+
+- ¿Qué hago con la orden retenida de bombas de infusión?
+- ¿Hay pedidos de hospitales afectados por productos sin stock suficiente, y qué dice la política sobre hospitales?
+- ¿Cuánto tiempo lleva retenida la orden y cuál es el plazo máximo permitido?
 
 ## Datos de ejemplo
 

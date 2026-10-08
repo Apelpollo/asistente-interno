@@ -2,12 +2,12 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
-from app import db, rag, sql_agent
+from app import agent, db, rag, sql_agent
 
 app = FastAPI(
     title="Asistente interno",
     description="Asistente con RAG sobre documentos internos y agente SQL de solo lectura sobre MySQL.",
-    version="0.3.0",
+    version="0.4.0",
 )
 
 
@@ -91,3 +91,15 @@ def sql_validar(body: ConsultaSQL):
         return {"permitido": True, "sql_final": sql_agent.validate_sql(body.sql, sql_agent.allowed_tables())}
     except sql_agent.SQLRechazado as e:
         return {"permitido": False, "motivo": str(e)}
+
+
+# ---------- Paso 4: agente con tool calling ----------
+
+@app.post("/agente/preguntar")
+def agente_preguntar(body: Pregunta):
+    """El modelo decide qué herramientas usar (documentos, base de datos o ambas) y puede encadenarlas.
+    La respuesta incluye los pasos que siguió: herramienta, argumentos y resultado."""
+    try:
+        return agent.run(body.pregunta)
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=503, detail=f"Error en el agente (¿Ollama está corriendo?): {e}")

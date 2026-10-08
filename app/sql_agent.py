@@ -126,7 +126,33 @@ def schema_for_llm() -> str:
         f"- {r['TABLE_NAME']}.{r['COLUMN_NAME']} -> {r['REFERENCED_TABLE_NAME']}.{r['REFERENCED_COLUMN_NAME']}"
         for r in fks
     )
-    return f"Tablas:\n{db.get_schema()}\n\nRelaciones:\n{rel}"
+    return (f"Tablas:\n{db.get_schema()}\n\nRelaciones (únicas formas válidas de unir tablas):\n{rel}"
+            f"\n\nValores reales de columnas de texto:\n{categorical_values()}")
+
+
+def categorical_values(max_distinct: int = 15) -> str:
+    """Valores reales de las columnas de texto con pocos valores distintos.
+
+    Así el modelo sabe que el producto se llama "Bomba de infusión volumétrica BI-50"
+    y no inventa filtros como nombre = 'bombas de infusión'. En una base grande se limitaría
+    a columnas de catálogo; aquí se detectan solas por su número de valores distintos.
+    """
+    cols = db.run_query(
+        """
+        SELECT TABLE_NAME, COLUMN_NAME FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = %s AND DATA_TYPE IN ('varchar', 'char')
+        ORDER BY TABLE_NAME, ORDINAL_POSITION
+        """,
+        (settings.mysql_database,),
+    )
+    lines = []
+    for c in cols:
+        t, col = c["TABLE_NAME"], c["COLUMN_NAME"]
+        # Los nombres vienen de information_schema (no del usuario), y se escapan con backticks
+        rows = db.run_query(f"SELECT DISTINCT `{col}` AS v FROM `{t}` WHERE `{col}` IS NOT NULL LIMIT {max_distinct + 1}")
+        if 0 < len(rows) <= max_distinct:
+            lines.append(f"- {t}.{col}: " + ", ".join(repr(r["v"]) for r in rows))
+    return "\n".join(lines) or "(ninguna)"
 
 
 SQL_PROMPT = ChatPromptTemplate.from_messages([
@@ -135,7 +161,11 @@ SQL_PROMPT = ChatPromptTemplate.from_messages([
      "Reglas:\n"
      "- Usa SOLO las tablas y columnas del esquema. No inventes columnas.\n"
      "- Solo SELECT. Nunca INSERT, UPDATE, DELETE ni DDL.\n"
-     "- Usa JOIN según las relaciones indicadas.\n"
+     "- Une tablas SOLO con las relaciones indicadas (por ejemplo pedidos.producto_id = productos.id). "
+     "Nunca compares el id de una tabla con el id de otra tabla distinta.\n"
+     "- Para filtrar por texto libre (nombres, defectos) usa LIKE '%palabra clave%' con una palabra clave, "
+     "no igualdad exacta. Revisa los valores reales listados abajo.\n"
+     "- Usa LEFT JOIN cuando la información relacionada podría no existir (por ejemplo pedidos o inspecciones).\n"
      "- Los valores de columnas ENUM deben escribirse exactamente como aparecen en el esquema.\n"
      "- Devuelve columnas con nombres claros (usa alias en español si ayuda).\n"
      "- Responde SOLO con el SQL dentro de un bloque ```sql```, sin explicación.\n\n"
@@ -155,7 +185,8 @@ ANSWER_PROMPT = ChatPromptTemplate.from_messages([
      "Eres el asistente interno de una planta de equipo electro-médico. "
      "Responde la pregunta usando ÚNICAMENTE los datos del resultado de la consulta. "
      "Si el resultado está vacío, dilo claramente. No inventes datos. "
-     "Responde en español, breve y directo; usa una lista si hay varios registros."),
+     "Responde en español. Si hay varios registros, usa una lista e incluye en cada renglón "
+     "los datos relevantes del resultado (por ejemplo cliente, producto y cantidad), no solo el identificador."),
     ("human", "Pregunta: {pregunta}\n\nSQL ejecutado:\n{sql}\n\nResultado ({n} filas):\n{filas}"),
 ])
 
@@ -173,7 +204,8 @@ def _json_default(v):
     return str(v)
 
 
-def ask(pregunta: str, llm: BaseChatModel | None = None) -> dict:
+def generate_and_run(pregunta: str, llm: BaseChatModel | None = None) -> dict:
+    """Genera el SQL, lo valida y lo ejecuta (sin resumir). Lo usa /sql/preguntar y el agente del paso 4."""
     llm = llm or get_llm()
     esquema = schema_for_llm()
     tablas = allowed_tables()
@@ -181,33 +213,35 @@ def ask(pregunta: str, llm: BaseChatModel | None = None) -> dict:
     sql_generado = extract_sql((SQL_PROMPT | llm).invoke({"esquema": esquema, "pregunta": pregunta}).content)
     intentos = [sql_generado]
 
-    # Un reintento: si la validación o MySQL fallan, el modelo ve el error y corrige
+    # Un reintento: si MySQL marca error, el modelo ve el error y corrige
     for intento in range(2):
         try:
             sql_seguro = validate_sql(sql_generado, tablas)
             filas = execute_safe(sql_seguro)
-            break
+            return {"ok": True, "sql": sql_seguro, "intentos": intentos,
+                    "filas": json.loads(json.dumps(filas, default=_json_default))}
         except SQLRechazado as e:
             # Un rechazo por seguridad no se reintenta: se reporta tal cual
-            return {"pregunta": pregunta, "sql": sql_generado, "rechazado": True,
-                    "motivo": str(e), "filas": [], "respuesta": f"Consulta bloqueada por seguridad: {e}"}
+            return {"ok": False, "rechazado": True, "sql": sql_generado, "intentos": intentos,
+                    "motivo": str(e), "filas": []}
         except Exception as e:  # noqa: BLE001 — error de MySQL (columna inexistente, sintaxis...)
             if intento == 1:
-                return {"pregunta": pregunta, "sql": sql_generado, "rechazado": False,
-                        "error": str(e), "intentos": intentos, "filas": [],
-                        "respuesta": "No pude generar una consulta válida para esa pregunta."}
+                return {"ok": False, "rechazado": False, "sql": sql_generado, "intentos": intentos,
+                        "motivo": str(e), "filas": []}
             sql_generado = extract_sql((RETRY_PROMPT | llm).invoke(
                 {"esquema": esquema, "pregunta": pregunta, "sql": sql_generado, "error": str(e)}).content)
             intentos.append(sql_generado)
 
-    filas_json = json.dumps(filas[:50], ensure_ascii=False, default=_json_default)
-    respuesta = (ANSWER_PROMPT | llm).invoke(
-        {"pregunta": pregunta, "sql": sql_seguro, "n": len(filas), "filas": filas_json}).content
 
-    return {
-        "pregunta": pregunta,
-        "sql": sql_seguro,
-        "intentos": intentos,
-        "filas": json.loads(json.dumps(filas, default=_json_default)),
-        "respuesta": respuesta,
-    }
+def ask(pregunta: str, llm: BaseChatModel | None = None) -> dict:
+    llm = llm or get_llm()
+    r = generate_and_run(pregunta, llm)
+    if not r["ok"]:
+        msg = (f"Consulta bloqueada por seguridad: {r['motivo']}" if r["rechazado"]
+               else "No pude generar una consulta válida para esa pregunta.")
+        return {"pregunta": pregunta, **r, "respuesta": msg}
+
+    filas_json = json.dumps(r["filas"][:50], ensure_ascii=False)
+    respuesta = (ANSWER_PROMPT | llm).invoke(
+        {"pregunta": pregunta, "sql": r["sql"], "n": len(r["filas"]), "filas": filas_json}).content
+    return {"pregunta": pregunta, **r, "respuesta": respuesta}
