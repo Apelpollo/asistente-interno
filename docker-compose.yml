@@ -23,6 +23,15 @@ services:
     env_file: .env
     environment:
       MYSQL_HOST: db
+      # Ollama corre en tu máquina (fuera de Docker); así lo ve el contenedor
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      DOCS_DIR: /code/docs
+      CHROMA_DIR: /code/chroma_data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./docs:/code/docs:ro
+      - ./chroma_data:/code/chroma_data
     ports:
       - "8000:8000"
     depends_on:
