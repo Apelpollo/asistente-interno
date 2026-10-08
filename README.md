@@ -10,7 +10,7 @@ Asistente para una empresa manufacturera de equipo electro-médico. Responde pre
 
 - [x] Paso 1: FastAPI + MySQL en Docker Compose, datos de ejemplo, usuario de solo lectura
 - [x] Paso 2: RAG (chunking por sección, embeddings con Ollama, ChromaDB, citas de fuente)
-- [ ] Paso 3: Agente SQL con validación en tres capas
+- [x] Paso 3: Agente SQL con validación en tres capas y reintento con el error
 - [ ] Paso 4: Agente con tool calling
 - [ ] Paso 5: Demo y diagrama
 
@@ -68,6 +68,38 @@ Respuesta correcta según los documentos: defecto **crítico** → **retener la 
 4. **Cambio de modelo (qwen2.5:7b):** con el mismo prompt, copió la línea completa con su categoría y concluyó correctamente.
 
 Pendiente: el procedimiento PR-07 no aparece en los fragmentos recuperados porque la pregunta habla de bombas y el PR-07 de "defecto crítico". Conectar ambos requiere dos búsquedas encadenadas, que es lo que resuelve el agente del paso 4.
+
+## Agente SQL de solo lectura (paso 3)
+
+- `POST /sql/preguntar` — pregunta en español → el LLM genera SQL → se valida → se ejecuta → respuesta con los datos reales.
+- `POST /sql/validar` — prueba la validación sin LLM: pega cualquier SQL y ve si pasa o por qué se bloquea.
+
+Flujo:
+
+1. El modelo recibe el **esquema real** leído de `information_schema` (tablas, columnas, valores de los ENUM y llaves foráneas), así no inventa columnas.
+2. Genera **una** consulta `SELECT`.
+3. Se **valida** (capa 2) y se le fuerza un `LIMIT` (capa 3).
+4. Se ejecuta con el usuario de **solo lectura** (capa 1) y tiempo máximo de 5 s.
+5. Si MySQL marca error (columna inexistente, sintaxis), el modelo recibe el error y **corrige una vez**. Un rechazo por seguridad **no** se reintenta.
+6. El modelo resume los datos en español, sin agregar nada que no esté en el resultado.
+
+### Las tres capas de seguridad
+
+| Capa | Qué hace | Qué detiene |
+|---|---|---|
+| 1. Permisos de MySQL | El agente usa `agente_lectura`, que solo tiene `SELECT` | Cualquier escritura, aunque todo lo demás falle |
+| 2. Validación con sqlglot | Analiza el SQL como árbol: una sola sentencia, solo `SELECT`, solo tablas de `planta`, sin `SLEEP`/`LOAD_FILE`/`INTO OUTFILE` | Inyección de sentencias, lectura de `mysql.user` o `information_schema`, ataques de tiempo, escritura de archivos |
+| 3. Límites de ejecución | `LIMIT` máximo de 100 filas y `MAX_EXECUTION_TIME` de 5 s | Consultas que traen toda la base o se quedan colgadas |
+
+¿Por qué tres y no una? La validación (capa 2) puede tener huecos; los permisos de la base (capa 1) no se pueden saltar desde el SQL. Y aunque una consulta sea segura, puede ser costosa (capa 3).
+
+Casos probados en `/sql/validar`: `DELETE`, `UPDATE`, `DROP`, `SET GLOBAL`, `SELECT 1; DROP TABLE`, `mysql.user`, `information_schema`, tabla inexistente, `SLEEP()`, `LOAD_FILE()` e `INTO OUTFILE` se bloquean; `SELECT`, `JOIN`, `GROUP BY` y `WITH` (CTE) pasan con `LIMIT` forzado.
+
+Preguntas para probar:
+
+- ¿Qué pedidos abiertos hay de productos que están por debajo de su stock mínimo?
+- ¿Qué órdenes de producción están retenidas y por qué defecto?
+- ¿Cuántas piezas ha pedido cada cliente en total?
 
 ## Datos de ejemplo
 

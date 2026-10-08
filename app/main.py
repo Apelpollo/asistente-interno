@@ -2,17 +2,17 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
-from app import db, rag
+from app import db, rag, sql_agent
 
 app = FastAPI(
     title="Asistente interno",
     description="Asistente con RAG sobre documentos internos y agente SQL de solo lectura sobre MySQL.",
-    version="0.2.0",
+    version="0.3.0",
 )
 
 
 class Pregunta(BaseModel):
-    pregunta: str = Field(..., min_length=3, examples=["¿Qué hago si una bomba de infusión sale con flujo fuera de tolerancia?"])
+    pregunta: str = Field(..., min_length=3, examples=["¿Qué pedidos abiertos hay de productos que están por debajo de su stock mínimo?"])
 
 
 # ---------- Paso 1: base ----------
@@ -67,3 +67,27 @@ def rag_preguntar(body: Pregunta):
         return rag.answer(body.pregunta)
     except Exception as e:  # noqa: BLE001
         raise HTTPException(status_code=503, detail=f"Error al consultar el modelo (¿Ollama está corriendo?): {e}")
+
+
+# ---------- Paso 3: agente SQL ----------
+
+class ConsultaSQL(BaseModel):
+    sql: str = Field(..., examples=["DELETE FROM pedidos"])
+
+
+@app.post("/sql/preguntar")
+def sql_preguntar(body: Pregunta):
+    """Pregunta en lenguaje natural -> el LLM genera SQL -> se valida -> se ejecuta -> respuesta con los datos."""
+    try:
+        return sql_agent.ask(body.pregunta)
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=503, detail=f"Error en el agente SQL (¿Ollama está corriendo?): {e}")
+
+
+@app.post("/sql/validar")
+def sql_validar(body: ConsultaSQL):
+    """Prueba la capa 2 sin LLM: muestra si un SQL se permite (y cómo queda) o por qué se bloquea."""
+    try:
+        return {"permitido": True, "sql_final": sql_agent.validate_sql(body.sql, sql_agent.allowed_tables())}
+    except sql_agent.SQLRechazado as e:
+        return {"permitido": False, "motivo": str(e)}
