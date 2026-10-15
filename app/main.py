@@ -89,7 +89,7 @@ def sql_validar(body: ConsultaSQL):
     """Prueba la capa 2 sin LLM: muestra si un SQL se permite (y cómo queda) o por qué se bloquea."""
     try:
         return {"permitido": True, "sql_final": sql_agent.validate_sql(body.sql, sql_agent.allowed_tables())}
-    except sql_agent.SQLRechazado as e:
+    except (sql_agent.SQLRechazado, sql_agent.SQLInvalido) as e:
         return {"permitido": False, "motivo": str(e)}
 
 

@@ -38,6 +38,10 @@ class SQLRechazado(Exception):
     """El SQL generado no pasó la validación (capa 2)."""
 
 
+class SQLInvalido(Exception):
+    """El SQL no se pudo interpretar (error de sintaxis). Se reintenta con el error, no es tema de seguridad."""
+
+
 # ---------- Capa 2 y 3: validación y límites ----------
 
 def allowed_tables() -> set[str]:
@@ -59,7 +63,9 @@ def validate_sql(sql: str, tablas_permitidas: set[str]) -> str:
     try:
         statements = sqlglot.parse(sql, read="mysql")
     except sqlglot.errors.ParseError as e:
-        raise SQLRechazado(f"SQL inválido: {e}") from e
+        # Quita los códigos de color de terminal que sqlglot mete en el mensaje
+        limpio = re.sub(r"\x1b\[[0-9;]*m", "", str(e))
+        raise SQLInvalido(f"SQL inválido: {limpio}") from e
 
     statements = [s for s in statements if s is not None]
     if len(statements) != 1:
@@ -168,7 +174,18 @@ SQL_PROMPT = ChatPromptTemplate.from_messages([
      "- Usa LEFT JOIN cuando la información relacionada podría no existir (por ejemplo pedidos o inspecciones).\n"
      "- Los valores de columnas ENUM deben escribirse exactamente como aparecen en el esquema.\n"
      "- Devuelve columnas con nombres claros (usa alias en español si ayuda).\n"
-     "- Responde SOLO con el SQL dentro de un bloque ```sql```, sin explicación.\n\n"
+     "- Los alias deben ser UNA sola palabra en snake_case, sin espacios ni acentos (por ejemplo kwh_por_m2).\n"
+     "- Si la pregunta pide un total o promedio por edificio, mes u otro grupo, usa SUM o AVG con GROUP BY.\n"
+     "- Glosario de energía: consumo por metro cuadrado (intensidad energética) = SUM(kwh) / area_construida_m2 "
+     "del edificio, en kWh/m². Las áreas están en metros CUADRADOS (m2).\n"
+     "- Desviación de un mes = (kwh - promedio del mes anterior y el siguiente) / ese promedio * 100. "
+     "Para calcularla usa LAG(kwh) y LEAD(kwh) OVER (PARTITION BY edificio_id ORDER BY mes) en una subconsulta.\n"
+     "  La base es MariaDB: LAG y LEAD llevan UN solo argumento (nunca LAG(kwh, 1, 0)) y sin SUM. Plantilla:\n"
+     "  SELECT mes, kwh, ROUND((kwh - (anterior + siguiente) / 2) / ((anterior + siguiente) / 2) * 100, 1) AS desviacion_pct\n"
+     "  FROM (SELECT c.mes, c.kwh, LAG(c.kwh) OVER (PARTITION BY c.edificio_id ORDER BY c.mes) AS anterior,\n"
+     "        LEAD(c.kwh) OVER (PARTITION BY c.edificio_id ORDER BY c.mes) AS siguiente\n"
+     "        FROM consumos_energia c JOIN edificios e ON c.edificio_id = e.id WHERE e.nombre LIKE '%palabra%') t\n"
+     "  WHERE YEAR(mes) = 2025 ORDER BY mes\n"     "- Responde SOLO con el SQL dentro de un bloque ```sql```, sin explicación.\n\n"
      "Esquema:\n{esquema}"),
     ("human", "{pregunta}"),
 ])
@@ -182,7 +199,7 @@ RETRY_PROMPT = ChatPromptTemplate.from_messages([
 
 ANSWER_PROMPT = ChatPromptTemplate.from_messages([
     ("system",
-     "Eres el asistente interno de una planta de equipo electro-médico. "
+     "Eres el asistente de una consultora de eficiencia energética y gestión de proyectos BIM. "
      "Responde la pregunta usando ÚNICAMENTE los datos del resultado de la consulta. "
      "Si el resultado está vacío, dilo claramente. No inventes datos. "
      "Responde en español. Si hay varios registros, usa una lista e incluye en cada renglón "

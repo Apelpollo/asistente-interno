@@ -13,6 +13,7 @@ from langchain_core.language_models import BaseChatModel
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama, OllamaEmbeddings
 from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
+from pypdf import PdfReader
 
 from app.config import settings
 
@@ -57,11 +58,11 @@ def get_store(embeddings: Embeddings | None = None) -> Chroma:
 # ---------- Ingesta ----------
 
 def load_and_split(docs_dir: str | None = None) -> list[Document]:
-    """Parte cada documento en chunks, conservando de qué documento y sección viene.
+    """Parte cada documento en chunks, conservando de qué documento y sección (o página) viene.
 
-    1. MarkdownHeaderTextSplitter corta por títulos (#, ##), así cada chunk sabe su sección.
-    2. RecursiveCharacterTextSplitter corta secciones largas en pedazos de ~chunk_size
-       caracteres con traslape, para no perder contexto en los cortes.
+    .md:  MarkdownHeaderTextSplitter corta por títulos (#, ##), así cada chunk sabe su sección.
+    .pdf: un documento por página (normas oficiales), así cada chunk sabe su página y se puede citar.
+    Después, RecursiveCharacterTextSplitter corta en pedazos de ~chunk_size caracteres con traslape.
     """
     header_splitter = MarkdownHeaderTextSplitter(
         headers_to_split_on=[("#", "documento"), ("##", "seccion")],
@@ -71,9 +72,10 @@ def load_and_split(docs_dir: str | None = None) -> list[Document]:
         chunk_size=settings.chunk_size,
         chunk_overlap=settings.chunk_overlap,
     )
+    carpeta = Path(docs_dir or settings.docs_dir)
 
     chunks: list[Document] = []
-    for path in sorted(Path(docs_dir or settings.docs_dir).glob("*.md")):
+    for path in sorted(carpeta.glob("*.md")):
         text = path.read_text(encoding="utf-8")
         sections = header_splitter.split_text(text)
         for doc in size_splitter.split_documents(sections):
@@ -81,6 +83,17 @@ def load_and_split(docs_dir: str | None = None) -> list[Document]:
             doc.metadata.setdefault("documento", path.stem)
             doc.metadata.setdefault("seccion", "General")
             chunks.append(doc)
+
+    # PDFs (por ejemplo, normas oficiales): un documento por página para poder citar la página
+    for path in sorted(carpeta.glob("*.pdf")):
+        paginas = []
+        for n, page in enumerate(PdfReader(path).pages, start=1):
+            texto = (page.extract_text() or "").strip()
+            if texto:
+                paginas.append(Document(page_content=texto, metadata={
+                    "archivo": path.name, "documento": path.stem, "seccion": f"página {n}"}))
+        chunks.extend(size_splitter.split_documents(paginas))
+
     return chunks
 
 
@@ -99,18 +112,18 @@ def ingest(embeddings: Embeddings | None = None, docs_dir: str | None = None) ->
 
 PROMPT = ChatPromptTemplate.from_messages([
     ("system",
-     "Eres el asistente interno de una planta de equipo electro-médico.\n"
+     "Eres el asistente de una consultora de eficiencia energética y gestión de proyectos BIM.\n"
      "Reglas:\n"
      "1. Responde SOLO con la información de los fragmentos de contexto. No inventes ni supongas.\n"
-     "2. Si el contexto menciona el caso de la pregunta como ejemplo de una categoría "
-     "(por ejemplo, un tipo de defecto), usa EXACTAMENTE esa categoría. No la reinterpretes.\n"
-     "3. Si una regla lleva a otro procedimiento (por ejemplo, retener una orden), menciónalo.\n"
+     "2. Si el contexto define una clasificación o un rango (por ejemplo, desviación crítica o un rango de kWh/m²), "
+     "aplica EXACTAMENTE esa clasificación con los números del contexto. No la reinterpretes.\n"
+     "3. Si una regla lleva a otro procedimiento o sección (por ejemplo, la sección de Auditorías), menciónalo.\n"
      "4. Cita cada dato con el número del fragmento entre corchetes, por ejemplo [1] o [2][3].\n"
      "5. Si el contexto no contiene la respuesta, di exactamente: "
-     "\"No encontré esa información en los documentos internos.\"\n\n"
+     "\"No encontré esa información en los documentos.\"\n\n"
      "Formato de respuesta (en español):\n"
-     "Evidencia: copia TEXTUALMENTE la línea COMPLETA del contexto que menciona el caso de la pregunta, "
-     "desde su inicio (incluida la etiqueta o categoría con la que empieza, por ejemplo \"Crítico:\"), "
+     "Evidencia: copia TEXTUALMENTE la línea COMPLETA del contexto que responde la pregunta, "
+     "desde su inicio (incluida la etiqueta con la que empieza, por ejemplo \"Crítica:\"), "
      "sin recortarla ni cambiar palabras, cada una con su [n].\n"
      "Respuesta: conclusión breve que se apoye ÚNICAMENTE en la evidencia anterior."),
     ("human", "Contexto:\n{contexto}\n\nPregunta: {pregunta}"),

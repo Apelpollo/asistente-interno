@@ -18,30 +18,35 @@ from app import rag, sql_agent
 
 MAX_PASOS = 6  # tope de llamadas a herramientas, para que el agente nunca cicle sin fin
 
-SYSTEM_PROMPT = """Eres el asistente interno de una planta de equipo electro-médico.
+SYSTEM_PROMPT = """Eres el asistente de una consultora de eficiencia energética y gestión de proyectos BIM.
 Tienes dos herramientas:
-- buscar_documentos: manuales, procedimientos y políticas internas (calidad, retención de órdenes, garantías).
-  Úsala para preguntas de "qué se hace", "cuál es la regla", "qué dice el procedimiento".
-- consultar_base_datos: datos en vivo de la planta (productos, stock, pedidos, clientes, órdenes de producción, inspecciones).
-  Úsala para preguntas de "cuántos", "cuáles", "qué pedidos", "qué órdenes", estados actuales.
+- buscar_documentos: normas oficiales mexicanas de eficiencia energética en edificaciones (NOM-ENER) y el
+  procedimiento interno PR-EN-02 (desviaciones de consumo, auditorías, intensidad energética de referencia,
+  registro de requerimientos). Úsala para "qué dice la norma", "qué procede", "cuál es el rango de referencia".
+- consultar_base_datos: datos de los edificios cliente: edificios (tipo, ciudad, área), espacios del modelo BIM
+  (nivel, uso, área) y consumos eléctricos mensuales de CFE (kWh, costo, demanda).
+  Úsala para "cuánto consume", "qué edificio", "qué mes", comparaciones y cálculos.
 
 Reglas:
-1. Usa las herramientas; no respondas de memoria datos de la planta ni reglas internas.
-2. Si la pregunta habla de algo concreto de la planta ("la orden", "el pedido", "ese producto", "los clientes"),
-   PRIMERO usa consultar_base_datos para obtener los datos reales de ese caso. Pide también lo relacionado:
-   para una orden, sus inspecciones (defecto) y los pedidos abiertos con sus clientes de ese mismo producto.
-   DESPUÉS usa buscar_documentos con los detalles que encontraste (producto, tipo de defecto).
+1. Usa las herramientas; no respondas de memoria datos de los edificios ni reglas.
+2. Si la pregunta habla de un edificio o de consumos concretos, PRIMERO usa consultar_base_datos para obtener
+   los datos reales (consumo por mes, área, tipo de edificio). DESPUÉS usa buscar_documentos con lo que
+   encontraste (tipo de edificio, porcentaje de desviación) para saber qué procede.
+   Si preguntan por consumo anormal o desviaciones, NO pidas solo los kWh: pide directamente la desviación, por ejemplo
+   consultar_base_datos("kwh de cada mes de <edificio> en 2025 y su desviación en porcentaje contra el promedio
+   del mes anterior y el siguiente"). Luego llama buscar_documentos("clasificación de desviaciones <porcentaje>%").
 3. Si la pregunta combina datos y reglas, usa ambas herramientas. Una sola llamada casi nunca basta en ese caso.
-4. Si un documento menciona otro procedimiento o documento (por ejemplo "conforme al PR-07"), búscalo también.
+4. Si un documento menciona otra sección o procedimiento (por ejemplo "conforme a la sección de Auditorías"), búscalo también.
 5. Escribe consultas propias y específicas para el caso; no repitas textos genéricos.
 6. Si un resultado no trae lo que necesitas o trae 0 filas, reformula y vuelve a buscar con algo más general.
-7. Nunca supongas datos ("asumiremos..."). Si no los encontraste después de reintentar, dilo.
+7. Nunca supongas datos. Si no los encontraste después de reintentar, dilo.
+8. Si calculas un porcentaje o una división con los datos, muestra la operación.
 
 Respuesta final:
-- Empieza con los datos concretos del caso (por ejemplo: qué orden, qué producto, qué defecto, qué clientes afectados).
+- Empieza con los datos concretos del caso (edificio, mes, kWh, porcentaje, kWh/m²).
 - Luego explica qué procede según los documentos, aplicado a ESE caso.
-- Cita las fuentes SOLO como texto: nombre del documento y sección para reglas, y "base de datos" para datos.
-  NUNCA escribas enlaces ni URLs: los documentos no tienen dirección web.
+- Cita las fuentes SOLO como texto: nombre del documento y sección o página para reglas, y "base de datos" para datos.
+  NUNCA escribas enlaces ni URLs.
 - Si después de buscar no encuentras la información, dilo claramente. No inventes.
 Responde en español, claro y directo."""
 
@@ -51,9 +56,9 @@ def build_tools(sql_llm: BaseChatModel | None = None, embeddings: Embeddings | N
 
     @tool
     def buscar_documentos(consulta: str) -> str:
-        """Busca en los manuales, procedimientos y políticas internas de la planta
-        (calidad, clasificación de defectos, retención de órdenes, garantías).
-        La consulta debe incluir los detalles concretos del caso: producto, tipo de defecto, situación."""
+        """Busca en las normas oficiales de eficiencia energética en edificaciones (NOM-ENER) y en el
+        procedimiento interno PR-EN-02 (desviaciones de consumo, auditorías, rangos de kWh/m², requerimientos).
+        La consulta debe incluir los detalles concretos del caso: tipo de edificio, porcentaje, tema."""
         docs = rag.retrieve(consulta, k=4, embeddings=embeddings)
         if not docs:
             return "No hay documentos cargados. Ejecuta /rag/ingest."
@@ -63,10 +68,11 @@ def build_tools(sql_llm: BaseChatModel | None = None, embeddings: Embeddings | N
 
     @tool
     def consultar_base_datos(pregunta: str) -> str:
-        """Consulta los datos en vivo de la planta en MySQL (solo lectura): productos y stock, pedidos y clientes,
-        órdenes de producción y su estado, inspecciones de calidad y defectos.
+        """Consulta los datos de los edificios cliente en la base (solo lectura): edificios y su área,
+        espacios del modelo BIM y consumos eléctricos mensuales (kWh, costo, demanda).
         El argumento es una pregunta en lenguaje natural (español), NO código SQL: el SQL se genera y valida aparte.
-        Pide todos los datos útiles del caso, incluyendo tablas relacionadas."""
+        Pide todos los datos útiles del caso. Si buscas consumos anormales, la pregunta debe pedir
+        "la desviación en porcentaje de cada mes contra el promedio del mes anterior y el siguiente"."""
         r = sql_agent.generate_and_run(pregunta, llm=sql_llm)
         if not r["ok"]:
             return f"No se pudo consultar: {r['motivo']}"
