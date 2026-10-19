@@ -8,15 +8,39 @@ Así puede encadenar pasos, por ejemplo: base de datos (orden retenida) -> manua
 (el defecto es crítico) -> procedimiento PR-07 (qué se hace con una orden retenida).
 """
 import json
+import unicodedata
 
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 from langchain_core.tools import tool
 
-from app import rag, sql_agent
+from app import rag, sql_agent, tracing
+from app.config import settings
 
 MAX_PASOS = 6  # tope de llamadas a herramientas, para que el agente nunca cicle sin fin
+MAX_RECORDATORIOS = 2  # veces que se le recuerda usar la herramienta en vez de anunciarla
+
+# Frases con las que el modelo anuncia una acción en lugar de ejecutarla (se comparan sin acentos)
+ANUNCIOS = ("consultare", "buscare", "revisare", "usare", "voy a consultar", "voy a buscar", "voy a revisar",
+            "voy a usar", "a continuacion consult", "a continuacion busc", "procedere a", "verificare",
+            "podrias proporcionar", "puedes proporcionar", "necesito conocer", "necesito saber")
+
+RECORDATORIO = ("Escribiste que vas a consultar algo, pero no llamaste ninguna herramienta. "
+                "Si necesitas más información, llama la herramienta ahora. "
+                "Si ya tienes todo, da la respuesta final completa.")
+
+RECORDATORIO_SIN_HERRAMIENTAS = (
+    "Respondiste sin usar ninguna herramienta. No le pidas datos al usuario ni respondas de memoria: "
+    "busca tú mismo con consultar_base_datos (datos de la planta) y buscar_documentos (reglas y procedimientos). "
+    "Si la petición es modificar o borrar datos, explica que solo tienes acceso de lectura.")
+
+
+def anuncia_sin_actuar(texto: str) -> bool:
+    """True si el modelo dijo que iba a usar una herramienta pero no la llamó."""
+    t = unicodedata.normalize("NFKD", (texto or "").lower())
+    t = "".join(c for c in t if not unicodedata.combining(c))
+    return any(a in t for a in ANUNCIOS)
 
 SYSTEM_PROMPT = """Eres el asistente interno de una planta de equipo electro-médico.
 Tienes dos herramientas:
@@ -83,6 +107,22 @@ def build_tools(sql_llm: BaseChatModel | None = None, embeddings: Embeddings | N
 
 def run(pregunta: str, llm=None, sql_llm: BaseChatModel | None = None,
         embeddings: Embeddings | None = None) -> dict:
+    """Corre el agente dentro de un trace de Langfuse (si está configurado)."""
+    with tracing.observar("agente", {"pregunta": pregunta},
+                          tags=["agente", settings.llm_model],
+                          metadata={"modelo": settings.llm_model}) as obs:
+        resultado = _run(pregunta, llm=llm, sql_llm=sql_llm, embeddings=embeddings)
+        if obs is not None:
+            obs.update(output={"respuesta": resultado["respuesta"],
+                               "herramientas": [p["herramienta"] for p in resultado["pasos"]],
+                               "recordatorios": resultado.get("recordatorios", 0),
+                               "tope_alcanzado": resultado.get("tope_alcanzado", False)})
+        return resultado
+
+
+def _run(pregunta: str, llm=None, sql_llm: BaseChatModel | None = None,
+         embeddings: Embeddings | None = None) -> dict:
+    cfg = tracing.langchain_config()  # {} si Langfuse no está configurado
     tools = build_tools(sql_llm=sql_llm, embeddings=embeddings)
     tools_by_name = {t.name: t for t in tools}
     llm = llm or rag.get_llm().bind_tools(tools)
@@ -90,12 +130,26 @@ def run(pregunta: str, llm=None, sql_llm: BaseChatModel | None = None,
     messages = [SystemMessage(SYSTEM_PROMPT), HumanMessage(pregunta)]
     pasos: list[dict] = []
 
+    recordatorios = 0
     for _ in range(MAX_PASOS):
-        ai: AIMessage = llm.invoke(messages)
+        ai: AIMessage = llm.invoke(messages, config=cfg)
         messages.append(ai)
 
         if not ai.tool_calls:
-            return {"pregunta": pregunta, "respuesta": ai.content, "pasos": pasos}
+            # Fallas detectadas con tracing + evals: el modelo a veces (1) responde o le pide datos al usuario
+            # sin haber usado ninguna herramienta, o (2) anuncia "consultaré los documentos" y termina
+            # sin llamarla. En ambos casos se le recuerda (máximo 2 veces) que use las herramientas.
+            if recordatorios < MAX_RECORDATORIOS:
+                if not pasos:  # quiso terminar sin haber usado ninguna herramienta
+                    recordatorios += 1
+                    messages.append(HumanMessage(RECORDATORIO_SIN_HERRAMIENTAS))
+                    continue
+                if anuncia_sin_actuar(ai.content):  # dijo "consultaré..." pero no llamó la herramienta
+                    recordatorios += 1
+                    messages.append(HumanMessage(RECORDATORIO))
+                    continue
+            return {"pregunta": pregunta, "respuesta": ai.content, "pasos": pasos,
+                    "recordatorios": recordatorios}
 
         for call in ai.tool_calls:
             herramienta = tools_by_name.get(call["name"])
@@ -103,7 +157,7 @@ def run(pregunta: str, llm=None, sql_llm: BaseChatModel | None = None,
                 resultado = f"Herramienta desconocida: {call['name']}"
             else:
                 try:
-                    resultado = herramienta.invoke(call["args"])
+                    resultado = herramienta.invoke(call["args"], config=cfg)
                 except Exception as e:  # noqa: BLE001
                     resultado = f"Error al ejecutar la herramienta: {e}"
             pasos.append({
@@ -115,5 +169,5 @@ def run(pregunta: str, llm=None, sql_llm: BaseChatModel | None = None,
 
     # Se alcanzó el tope: se le pide al modelo que responda con lo que ya tiene
     messages.append(HumanMessage("Ya no puedes usar más herramientas. Responde con la información que obtuviste."))
-    final = (llm.bound if hasattr(llm, "bound") else llm).invoke(messages)
+    final = (llm.bound if hasattr(llm, "bound") else llm).invoke(messages, config=cfg)
     return {"pregunta": pregunta, "respuesta": final.content, "pasos": pasos, "tope_alcanzado": True}
