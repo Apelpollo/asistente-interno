@@ -12,7 +12,8 @@ Asistente para una empresa manufacturera de equipo electro-médico. Responde pre
 - [x] Paso 2: RAG (chunking por sección, embeddings con Ollama, ChromaDB, citas de fuente)
 - [x] Paso 3: Agente SQL con validación en tres capas y reintento con el error
 - [x] Paso 4: Agente con tool calling que encadena documentos y base de datos
-- [ ] Paso 5: Demo y diagrama
+- [x] Paso 5: Observabilidad con Langfuse y evals automáticas
+- [ ] Paso 6: Demo y diagrama
 
 ## Cómo correrlo
 
@@ -130,6 +131,62 @@ Preguntas para probar:
 - ¿Qué hago con la orden retenida de bombas de infusión?
 - ¿Hay pedidos de hospitales afectados por productos sin stock suficiente, y qué dice la política sobre hospitales?
 - ¿Cuánto tiempo lleva retenida la orden y cuál es el plazo máximo permitido?
+
+## Observabilidad y evaluación (paso 5)
+
+### Tracing con Langfuse
+
+Cada pregunta a `/agente/preguntar` genera un trace en Langfuse con todo lo que hizo el agente:
+
+- cada llamada al LLM: prompt, respuesta, tokens y latencia
+- cada herramienta (`buscar_documentos`, `consultar_base_datos`) con sus argumentos y resultado
+- dentro de la herramienta de base de datos, la generación del SQL y el reintento si lo hubo
+
+Es opcional: si el `.env` no trae las llaves de Langfuse, el asistente funciona igual sin tracing (`app/tracing.py`).
+El LLM sigue corriendo local en Ollama; a Langfuse solo salen los traces. En un entorno regulado se puede self-hostear Langfuse para que nada salga de la red.
+
+### Evals
+
+`evals/dataset.py` tiene 15 casos con su respuesta esperada (sacada de los datos de ejemplo y los documentos):
+
+| Tipo | Casos | Qué se mide |
+|---|---|---|
+| SQL | 5 | `herramientas_ok`: usó `consultar_base_datos` · `contenido`: la respuesta trae los datos correctos |
+| RAG | 4 | `herramientas_ok`: usó `buscar_documentos` · `contenido`: cita el dato correcto del documento |
+| Mixto | 2 | `herramientas_ok`: encadenó **las dos** herramientas · `contenido` |
+| Ataque | 4 | `integridad_bd`: la base queda idéntica después de pedirle borrar, hacer `DROP` o cambiar datos |
+
+```bash
+docker compose exec api python -m evals.run_evals                # modelo del .env (qwen2.5:7b)
+docker compose exec api python -m evals.run_evals llama3.1:8b    # comparar otro modelo
+docker compose exec api python -m evals.run_evals --rapido       # 1 caso por tipo, para probar
+```
+
+Cada corrida queda como experimento en Langfuse (comparables lado a lado) y en `evals/resultados/<modelo>.json`.
+
+### Resultados (qwen2.5:7b, 15 casos)
+
+| Métrica | Línea base | Con el fix (corrida 1) | Con el fix (corrida 2) |
+|---|---|---|---|
+| Herramienta correcta | 90.9% | **100%** | **100%** |
+| Contenido correcto | 86.4% | 81.8% | 90.9% |
+| Integridad de la BD ante ataques | 100% | 100% | 100% |
+
+**Qué encontraron el tracing y las evals:** en las preguntas que combinan datos y documentos, el agente a veces
+terminaba sin llamar herramientas: escribía "consultaré los documentos…" o le pedía al usuario el número de orden
+en vez de buscarlo. Se corrigió en el loop del agente (`app/agent.py`): si intenta responder sin haber usado
+ninguna herramienta, o anuncia una acción sin ejecutarla, se le recuerda que las use (máximo 2 veces).
+
+Un primer intento fue agregar una regla al prompt; las evals mostraron que **bajaba** el contenido correcto
+(86% → 68%) porque cambiaba el comportamiento en todas las preguntas. Se descartó en favor del arreglo en código.
+
+**Variación entre corridas:** aun con temperatura 0, el modelo local no es 100% determinista. Con 15 casos,
+un solo caso mueve el contenido ~9 puntos, por eso cada cambio se mide con al menos dos corridas.
+
+**Pendiente (lo que muestran las fallas restantes):**
+- Text-to-SQL: a veces filtra con `LIKE` sobre la columna equivocada (busca "cables de paciente" en `defecto` en vez de en el producto) o arma mal el JOIN de pedidos, y responde "no hay pedidos" cuando sí los hay.
+- RAG: la sección "Comunicación con clientes" del PR-07 no siempre se recupera.
+- El modelo a veces manda argumentos con forma de objeto a `buscar_documentos`; el error se le regresa y reintenta.
 
 ## Datos de ejemplo
 

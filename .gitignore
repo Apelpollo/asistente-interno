@@ -3,3 +3,15 @@ __pycache__/
 *.pyc
 .venv/
 chroma_data/
+# Secretos: llaves de Langfuse y contraseñas de MySQL. NUNCA se suben.
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Datos generados localmente
+chroma_data/

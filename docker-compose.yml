@@ -32,6 +32,7 @@ services:
     volumes:
       - ./docs:/code/docs:ro
       - ./chroma_data:/code/chroma_data
+      - ./evals:/code/evals   # los resultados de las evals quedan en tu carpeta
     ports:
       - "8000:8000"
     depends_on:
