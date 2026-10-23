@@ -127,7 +127,7 @@ def agente_preguntar(request: Request, body: Pregunta):  # NUEVO: request
         raise HTTPException(status_code=503, detail=f"Error en el agente (¿Ollama está corriendo?): {e}")
 
 
-# ---------- Paso 6: voz ----------
+# ---------- Paso 8: voz ----------
 
 MAX_AUDIO_BYTES = 10 * 1024 * 1024  # 10 MB
 

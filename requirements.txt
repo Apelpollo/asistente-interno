@@ -16,7 +16,7 @@ langfuse==5.*
 
 slowapi==0.1.9
 
-# Paso 6: voz
+# Paso 8: voz
 faster-whisper==1.*
 python-multipart==0.0.*
 httpx>=0.27

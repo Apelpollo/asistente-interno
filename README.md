@@ -5,6 +5,7 @@ Asistente para una empresa manufacturera de equipo electro-médico. Responde pre
 - **Documentos internos** (manuales, procedimientos) mediante RAG con ChromaDB. *(paso 2)*
 - **Datos en vivo de MySQL** mediante text-to-SQL de solo lectura. *(paso 3)*
 - Un **agente con tool calling** que decide qué herramienta usar. *(paso 4)*
+- **Voz** en español e inglés: Whisper local + Azure AI Speech. *(paso 8)*
 
 ## Estado
 
@@ -13,19 +14,30 @@ Asistente para una empresa manufacturera de equipo electro-médico. Responde pre
 - [x] Paso 3: Agente SQL con validación en tres capas y reintento con el error
 - [x] Paso 4: Agente con tool calling que encadena documentos y base de datos
 - [x] Paso 5: Observabilidad con Langfuse y evals automáticas
-- [ ] Paso 6: Demo y diagrama
+- [x] Paso 6: API de producción: versionado `/v1`, autenticación por API key y rate limiting
+- [x] Paso 7: Retrieval tuning: 24 configuraciones medidas con hit@k y MRR
+- [x] Paso 8: Voz: voz → texto (Whisper local) → agente → voz (Azure AI Speech)
+- [ ] Paso 9: Demo y diagrama
 
 ## Cómo correrlo
 
 ```bash
-cp .env.example .env        # ajusta contraseñas si quieres
+cp .env.example .env        # ajusta contraseñas y pon tu API_KEYS
 docker compose up -d --build
 ```
 
 - Documentación interactiva: http://localhost:8000/docs
-- `GET /health` — API y MySQL
-- `GET /schema` — esquema que verá el LLM
-- `GET /productos/bajo-stock` — consulta de ejemplo
+- `GET /health` — API y MySQL (sin versión ni llave, para monitoreo)
+- `GET /v1/schema` — esquema que verá el LLM
+- `GET /v1/productos/bajo-stock` — consulta de ejemplo
+
+Todo lo que está bajo `/v1` pide el header `X-API-Key` (ver paso 6):
+
+```bash
+curl -X POST http://localhost:8000/v1/agente/preguntar \
+  -H "X-API-Key: tu-llave" -H "Content-Type: application/json" \
+  -d '{"pregunta": "¿Qué órdenes de producción están retenidas y por qué?"}'
+```
 
 > Si cambias algo en `db/init/`, borra el volumen para que MySQL lo vuelva a cargar:
 > `docker compose down -v && docker compose up -d --build`
@@ -40,13 +52,15 @@ ollama pull nomic-embed-text   # embeddings
 ollama pull qwen2.5:7b         # modelo que responde (~4.7 GB de VRAM)
 ```
 
+- Opcional, para respuestas habladas: un recurso **Azure AI Speech** (plan F0 gratuito) con `AZURE_SPEECH_KEY` y `AZURE_SPEECH_REGION` en el `.env`. Sin él, `/v1/voz/preguntar` responde solo en texto.
+
 ## RAG sobre documentos internos (paso 2)
 
 Documentos de ejemplo en `docs/`: Manual de Calidad MQ-01, Procedimiento de retención PR-07 y Política de garantías PG-03.
 
-1. `POST /rag/ingest` — carga los documentos en ChromaDB (correrlo cada vez que cambien los `.md`).
-2. `POST /rag/buscar` — búsqueda semántica sin LLM; muestra qué fragmentos recupera.
-3. `POST /rag/preguntar` — respuesta del LLM citando los fragmentos `[1]`, `[2]`… y la lista de fuentes.
+1. `POST /v1/rag/ingest` — carga los documentos en ChromaDB (correrlo cada vez que cambien los `.md`).
+2. `POST /v1/rag/buscar` — búsqueda semántica sin LLM; muestra qué fragmentos recupera.
+3. `POST /v1/rag/preguntar` — respuesta del LLM citando los fragmentos `[1]`, `[2]`… y la lista de fuentes.
 
 Cómo funciona:
 
@@ -72,8 +86,8 @@ Pendiente: el procedimiento PR-07 no aparece en los fragmentos recuperados porqu
 
 ## Agente SQL de solo lectura (paso 3)
 
-- `POST /sql/preguntar` — pregunta en español → el LLM genera SQL → se valida → se ejecuta → respuesta con los datos reales.
-- `POST /sql/validar` — prueba la validación sin LLM: pega cualquier SQL y ve si pasa o por qué se bloquea.
+- `POST /v1/sql/preguntar` — pregunta en español → el LLM genera SQL → se valida → se ejecuta → respuesta con los datos reales.
+- `POST /v1/sql/validar` — prueba la validación sin LLM: pega cualquier SQL y ve si pasa o por qué se bloquea.
 
 Flujo:
 
@@ -94,7 +108,7 @@ Flujo:
 
 ¿Por qué tres y no una? La validación (capa 2) puede tener huecos; los permisos de la base (capa 1) no se pueden saltar desde el SQL. Y aunque una consulta sea segura, puede ser costosa (capa 3).
 
-Casos probados en `/sql/validar`: `DELETE`, `UPDATE`, `DROP`, `SET GLOBAL`, `SELECT 1; DROP TABLE`, `mysql.user`, `information_schema`, tabla inexistente, `SLEEP()`, `LOAD_FILE()` e `INTO OUTFILE` se bloquean; `SELECT`, `JOIN`, `GROUP BY` y `WITH` (CTE) pasan con `LIMIT` forzado.
+Casos probados en `/v1/sql/validar`: `DELETE`, `UPDATE`, `DROP`, `SET GLOBAL`, `SELECT 1; DROP TABLE`, `mysql.user`, `information_schema`, tabla inexistente, `SLEEP()`, `LOAD_FILE()` e `INTO OUTFILE` se bloquean; `SELECT`, `JOIN`, `GROUP BY` y `WITH` (CTE) pasan con `LIMIT` forzado.
 
 Preguntas para probar:
 
@@ -104,7 +118,7 @@ Preguntas para probar:
 
 ## Agente con tool calling (paso 4)
 
-`POST /agente/preguntar` — un solo punto de entrada. El modelo decide qué herramientas usar:
+`POST /v1/agente/preguntar` — un solo punto de entrada. El modelo decide qué herramientas usar:
 
 | Herramienta | Qué hace | Cuándo la usa |
 |---|---|---|
@@ -136,7 +150,7 @@ Preguntas para probar:
 
 ### Tracing con Langfuse
 
-Cada pregunta a `/agente/preguntar` genera un trace en Langfuse con todo lo que hizo el agente:
+Cada pregunta a `/v1/agente/preguntar` genera un trace en Langfuse con todo lo que hizo el agente:
 
 - cada llamada al LLM: prompt, respuesta, tokens y latencia
 - cada herramienta (`buscar_documentos`, `consultar_base_datos`) con sus argumentos y resultado
@@ -187,6 +201,93 @@ un solo caso mueve el contenido ~9 puntos, por eso cada cambio se mide con al me
 - Text-to-SQL: a veces filtra con `LIKE` sobre la columna equivocada (busca "cables de paciente" en `defecto` en vez de en el producto) o arma mal el JOIN de pedidos, y responde "no hay pedidos" cuando sí los hay.
 - RAG: la sección "Comunicación con clientes" del PR-07 no siempre se recupera.
 - El modelo a veces manda argumentos con forma de objeto a `buscar_documentos`; el error se le regresa y reintenta.
+
+## API de producción (paso 6)
+
+| Qué | Cómo | Por qué |
+|---|---|---|
+| Versionado | Todo bajo `/v1` con un `APIRouter`; `/health` queda fuera | Cambios incompatibles futuros van a `/v2` sin romper a quien ya integra `/v1` |
+| Autenticación | Header `X-API-Key`; llaves en `API_KEYS` (varias separadas por coma), comparación en tiempo constante (`secrets.compare_digest`) | Rotar llaves sin downtime y no filtrar información por tiempos de respuesta |
+| Rate limiting | `slowapi`, contado **por llave** (o por IP si no hay llave); responde `429` | Cada llamada al LLM cuesta GPU; un cliente no puede acaparar el servicio |
+
+Límites según lo que cuesta cada endpoint:
+
+| Endpoint | Límite |
+|---|---|
+| `/v1/voz/preguntar` (Whisper + agente + TTS) | 5/min |
+| `/v1/agente/preguntar`, `/v1/rag/preguntar`, `/v1/sql/preguntar` (LLM) | 10/min |
+| `/v1/voz/transcribir` (Whisper) | 10/min |
+| `/v1/rag/buscar` (solo embeddings) | 30/min |
+| `/v1/rag/ingest` (reconstruye la colección) | 2/min |
+| Resto | 60/min |
+
+Probado: sin llave → `401`; con llave, 30 llamadas a `/v1/rag/buscar` → `200` y la 31 → `429`.
+
+## Retrieval tuning (paso 7)
+
+Las evals del paso 5 miden la respuesta final; aquí se mide **solo la búsqueda**, sin LLM, para ajustar el chunking con números.
+
+- `evals/retrieval_dataset.py`: 22 preguntas **parafraseadas** (no repiten las palabras del documento) con la "aguja": el texto que tiene que aparecer en algún fragmento recuperado.
+- `evals/tune_retrieval.py`: prueba 24 configuraciones en colecciones temporales en memoria (no toca `chroma_data/`):
+  estrategia (por secciones `#`/`##` o solo por tamaño) × tamaño (200, 400, 800) × traslape (0 o 12.5%) × prefijos de nomic (sí/no), y para cada una k = 1, 2, 3, 4, 6.
+- Métricas: **hit@k** (¿la aguja está en los k fragmentos?), **MRR** (¿qué tan arriba sale el primero correcto?) y caracteres de contexto que se mandarían al LLM.
+
+```bash
+docker compose exec api python -m evals.tune_retrieval
+```
+
+Resultados (22 preguntas, `nomic-embed-text`):
+
+| Configuración | hit@k | MRR | Contexto |
+|---|---|---|---|
+| **Por secciones, 800, prefijos, k=6 (la actual)** | **1.00** | 0.65 | 2546 chars |
+| La misma **sin prefijos** de nomic | 0.86 | 0.64 | — |
+| Solo por tamaño, 800, prefijos, k=6 | 0.95 | 0.73 | 3823 chars |
+| Por secciones, 400, traslape 50, k=4 | 0.91 | 0.74 | 1133 chars |
+
+Con la configuración actual, al bajar k:
+
+| k | 6 | 4 | 3 | 1 |
+|---|---|---|---|---|
+| hit@k | 1.00 | 0.91 | 0.82 | 0.41 |
+
+**Lo que dicen los números:**
+
+1. **Los prefijos `search_document:` / `search_query:` valen 14 puntos** de hit@6 (0.86 → 1.00). Confirma con datos lo que se había visto a mano en el paso 2.
+2. **Cortar por secciones le gana a cortar solo por tamaño** (1.00 vs 0.95) y manda menos contexto: cada fragmento es una idea completa con su título.
+3. **El traslape no cambia nada en estos documentos**: ninguna sección pasa de 800 caracteres, así que el segundo splitter nunca corta dentro de una sección.
+4. **El ranking es el punto débil**: el fragmento correcto sale primero solo en el 41% de las preguntas. Funciona porque k=6 es casi un tercio de los 19 fragmentos del corpus; con muchos más documentos no alcanzaría.
+
+**Siguiente paso:** búsqueda híbrida (BM25 + vectores con Reciprocal Rank Fusion) o un reranker, medidos con este mismo script, para llegar a hit@3 ≈ 1.00 con la mitad del contexto.
+
+## Voz (paso 8)
+
+```
+audio (es/en) → faster-whisper (local, CPU) → texto + idioma → agente (paso 4) → respuesta → Azure AI Speech → MP3
+```
+
+- `POST /v1/voz/transcribir` — solo voz → texto; útil para revisar qué entendió.
+- `POST /v1/voz/preguntar` — flujo completo. Devuelve MP3 (la transcripción y la respuesta van en headers `X-Transcripcion` / `X-Respuesta`, URL-encoded) o JSON con `?formato=json`.
+
+```bash
+curl -X POST "http://localhost:8000/v1/voz/preguntar?formato=json" \
+  -H "X-API-Key: tu-llave" -F "audio=@pregunta.m4a"
+
+curl -X POST http://localhost:8000/v1/voz/preguntar \
+  -H "X-API-Key: tu-llave" -F "audio=@pregunta.m4a" -o respuesta.mp3
+```
+
+| Decisión | Por qué |
+|---|---|
+| **Whisper local** (`faster-whisper`, modelo `small`, int8 en CPU) | El audio no sale de la máquina, sin costo por minuto; el modelo se descarga una vez a `whisper_cache/` |
+| **Decodificación propia con PyAV** (cualquier formato → mono 16 kHz) | El decodificador de faster-whisper usa un parámetro que PyAV quitó en versiones recientes; así no depende de esa versión |
+| **Detección de idioma** | Whisper detecta español o inglés; si duda (audios cortos), reintenta forzando español |
+| **Bilingüe sin traducir los datos** | En inglés, el agente responde en inglés pero llama las herramientas en español, porque documentos y base están en español |
+| **Azure AI Speech por REST** (voces `es-MX-DaliaNeural`, `en-US-JennyNeural`) | Voces neuronales sin instalar el SDK (que en Linux pide librerías del sistema) |
+| **Limpieza antes de hablar** | Se quitan citas `[1]` y markdown; se recorta a 1500 caracteres para cuidar la cuota F0 |
+| **Errores claros** | Audio vacío o ilegible → `422`; más de 10 MB → `413`; falla de Azure → `502`; sin llave de Azure → respuesta solo en texto |
+
+Ejemplo real: *"¿Cuántos meses de garantía tienen las bombas de infusión?"* → Whisper transcribe exacto (idioma `es`, confianza 0.98) → el agente usa `buscar_documentos` → *"18 meses en partes y mano de obra, desde la fecha de entrega"* (PG-03) → MP3 con la respuesta.
 
 ## Datos de ejemplo
 
