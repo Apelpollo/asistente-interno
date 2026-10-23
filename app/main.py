@@ -1,14 +1,27 @@
 """API del asistente interno."""
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request  # NUEVO: APIRouter, Depends, Request
 from pydantic import BaseModel, Field
+from slowapi import _rate_limit_exceeded_handler  # NUEVO
+from slowapi.errors import RateLimitExceeded  # NUEVO
+from slowapi.middleware import SlowAPIMiddleware  # NUEVO
 
 from app import agent, db, rag, sql_agent
+from app.ratelimit import limiter  # NUEVO
+from app.security import require_api_key  # NUEVO
 
 app = FastAPI(
     title="Asistente interno",
     description="Asistente con RAG sobre documentos internos y agente SQL de solo lectura sobre MySQL.",
-    version="0.4.0",
+    version="0.5.0",  # NUEVO: subimos versión
 )
+
+# NUEVO: rate limiting global
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
+
+# NUEVO: todo lo de negocio vive bajo /v1 y exige API key
+api = APIRouter(prefix="/v1", dependencies=[Depends(require_api_key)])
 
 
 class Pregunta(BaseModel):
@@ -17,7 +30,8 @@ class Pregunta(BaseModel):
 
 # ---------- Paso 1: base ----------
 
-@app.get("/health")
+@app.get("/health")  # se queda en app: sin versión, sin key
+@limiter.exempt  # NUEVO: el healthcheck no cuenta para el límite
 def health():
     """Verifica que la API y la base de datos respondan."""
     try:
@@ -27,13 +41,13 @@ def health():
         raise HTTPException(status_code=503, detail=f"MySQL no disponible: {e}")
 
 
-@app.get("/schema")
+@api.get("/schema")  # NUEVO: @app -> @api
 def schema():
     """Esquema de la base (lo que verá el LLM en el paso 3)."""
     return {"schema": db.get_schema()}
 
 
-@app.get("/productos/bajo-stock")
+@api.get("/productos/bajo-stock")  # NUEVO: @app -> @api
 def productos_bajo_stock():
     """Consulta fija de ejemplo: productos por debajo de su stock mínimo."""
     return db.run_query(
@@ -43,8 +57,9 @@ def productos_bajo_stock():
 
 # ---------- Paso 2: RAG ----------
 
-@app.post("/rag/ingest")
-def rag_ingest():
+@api.post("/rag/ingest")  # NUEVO: @app -> @api
+@limiter.limit("2/minute")  # NUEVO: la ingesta es pesada
+def rag_ingest(request: Request):  # NUEVO: request
     """Lee los .md de docs/, los parte en chunks, genera embeddings y los guarda en ChromaDB."""
     try:
         return rag.ingest()
@@ -52,16 +67,18 @@ def rag_ingest():
         raise HTTPException(status_code=503, detail=f"Error en la ingesta (¿Ollama está corriendo?): {e}")
 
 
-@app.post("/rag/buscar")
-def rag_buscar(body: Pregunta):
+@api.post("/rag/buscar")  # NUEVO: @app -> @api
+@limiter.limit("30/minute")  # NUEVO: solo embeddings, más barato
+def rag_buscar(request: Request, body: Pregunta):  # NUEVO: request
     """Solo búsqueda semántica, sin LLM: útil para ver qué chunks recupera."""
     docs = rag.retrieve(body.pregunta)
     return [{"documento": d.metadata["documento"], "seccion": d.metadata["seccion"], "fragmento": d.page_content}
             for d in docs]
 
 
-@app.post("/rag/preguntar")
-def rag_preguntar(body: Pregunta):
+@api.post("/rag/preguntar")  # NUEVO: @app -> @api
+@limiter.limit("10/minute")  # NUEVO: llama al LLM
+def rag_preguntar(request: Request, body: Pregunta):  # NUEVO: request
     """Responde con el LLM usando solo los documentos internos, citando las fuentes."""
     try:
         return rag.answer(body.pregunta)
@@ -75,8 +92,9 @@ class ConsultaSQL(BaseModel):
     sql: str = Field(..., examples=["DELETE FROM pedidos"])
 
 
-@app.post("/sql/preguntar")
-def sql_preguntar(body: Pregunta):
+@api.post("/sql/preguntar")  # NUEVO: @app -> @api
+@limiter.limit("10/minute")  # NUEVO: llama al LLM
+def sql_preguntar(request: Request, body: Pregunta):  # NUEVO: request
     """Pregunta en lenguaje natural -> el LLM genera SQL -> se valida -> se ejecuta -> respuesta con los datos."""
     try:
         return sql_agent.ask(body.pregunta)
@@ -84,7 +102,7 @@ def sql_preguntar(body: Pregunta):
         raise HTTPException(status_code=503, detail=f"Error en el agente SQL (¿Ollama está corriendo?): {e}")
 
 
-@app.post("/sql/validar")
+@api.post("/sql/validar")  # NUEVO: @app -> @api (usa el límite global de 60/min)
 def sql_validar(body: ConsultaSQL):
     """Prueba la capa 2 sin LLM: muestra si un SQL se permite (y cómo queda) o por qué se bloquea."""
     try:
@@ -95,11 +113,16 @@ def sql_validar(body: ConsultaSQL):
 
 # ---------- Paso 4: agente con tool calling ----------
 
-@app.post("/agente/preguntar")
-def agente_preguntar(body: Pregunta):
+@api.post("/agente/preguntar")  # NUEVO: @app -> @api
+@limiter.limit("10/minute")  # NUEVO: llama al LLM
+def agente_preguntar(request: Request, body: Pregunta):  # NUEVO: request
     """El modelo decide qué herramientas usar (documentos, base de datos o ambas) y puede encadenarlas.
     La respuesta incluye los pasos que siguió: herramienta, argumentos y resultado."""
     try:
         return agent.run(body.pregunta)
     except Exception as e:  # noqa: BLE001
         raise HTTPException(status_code=503, detail=f"Error en el agente (¿Ollama está corriendo?): {e}")
+
+
+# NUEVO: siempre al final, después de definir todas las rutas
+app.include_router(api)

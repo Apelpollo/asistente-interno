@@ -13,3 +13,5 @@ sqlglot==30.*
 
 # Paso 5: observabilidad y evals
 langfuse==5.*
+
+slowapi==0.1.9
