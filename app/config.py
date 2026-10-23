@@ -23,5 +23,10 @@ class Settings:
     chunk_overlap: int = int(os.getenv("CHUNK_OVERLAP", "100"))
     top_k: int = int(os.getenv("TOP_K", "6"))
 
+    # Voz: Whisper local para voz -> texto, Azure AI Speech para texto -> voz
+    whisper_model: str = os.getenv("WHISPER_MODEL", "small")
+    azure_speech_key: str = os.getenv("AZURE_SPEECH_KEY", "")
+    azure_speech_region: str = os.getenv("AZURE_SPEECH_REGION", "")
+
 
 settings = Settings()

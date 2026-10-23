@@ -1,18 +1,21 @@
 """API del asistente interno."""
-from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request  # NUEVO: APIRouter, Depends, Request
+from urllib.parse import quote
+
+from fastapi import APIRouter, Depends, FastAPI, File, HTTPException, Request, UploadFile
+from fastapi.responses import Response
 from pydantic import BaseModel, Field
 from slowapi import _rate_limit_exceeded_handler  # NUEVO
 from slowapi.errors import RateLimitExceeded  # NUEVO
 from slowapi.middleware import SlowAPIMiddleware  # NUEVO
 
-from app import agent, db, rag, sql_agent
+from app import agent, db, rag, sql_agent, voice
 from app.ratelimit import limiter  # NUEVO
 from app.security import require_api_key  # NUEVO
 
 app = FastAPI(
     title="Asistente interno",
     description="Asistente con RAG sobre documentos internos y agente SQL de solo lectura sobre MySQL.",
-    version="0.5.0",  # NUEVO: subimos versión
+    version="0.6.0",
 )
 
 # NUEVO: rate limiting global
@@ -124,5 +127,67 @@ def agente_preguntar(request: Request, body: Pregunta):  # NUEVO: request
         raise HTTPException(status_code=503, detail=f"Error en el agente (¿Ollama está corriendo?): {e}")
 
 
-# NUEVO: siempre al final, después de definir todas las rutas
+# ---------- Paso 6: voz ----------
+
+MAX_AUDIO_BYTES = 10 * 1024 * 1024  # 10 MB
+
+
+def _leer_audio(audio: UploadFile) -> bytes:
+    datos = audio.file.read()
+    if not datos:
+        raise HTTPException(status_code=422, detail="El archivo de audio está vacío.")
+    if len(datos) > MAX_AUDIO_BYTES:
+        raise HTTPException(status_code=413, detail="El audio pasa de 10 MB.")
+    return datos
+
+
+@api.post("/voz/transcribir")
+@limiter.limit("10/minute")
+def voz_transcribir(request: Request, audio: UploadFile = File(...)):
+    """Solo voz -> texto (Whisper local): útil para revisar qué entendió antes de usar el agente."""
+    try:
+        return voice.transcribir(_leer_audio(audio))
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+
+
+@api.post("/voz/preguntar")
+@limiter.limit("5/minute")  # Whisper + agente + TTS: es el endpoint más caro
+def voz_preguntar(request: Request, audio: UploadFile = File(...), formato: str = "audio"):
+    """Pregunta hablada (español o inglés) -> agente -> respuesta hablada en el mismo idioma.
+
+    formato=audio (default): devuelve MP3; la transcripción y la respuesta van en headers X-*.
+    formato=json: devuelve transcripción, respuesta y pasos del agente, sin audio.
+    """
+    try:
+        stt = voice.transcribir(_leer_audio(audio))
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    if len(stt["texto"]) < 3:
+        raise HTTPException(status_code=422, detail="No se entendió ninguna pregunta en el audio.")
+
+    try:
+        r = agent.run(stt["texto"], idioma=stt["idioma"])
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=503, detail=f"Error en el agente (¿Ollama está corriendo?): {e}")
+
+    resultado = {"transcripcion": stt["texto"], "idioma": stt["idioma"],
+                 "respuesta": r["respuesta"], "herramientas": [p["herramienta"] for p in r["pasos"]]}
+    if formato == "json" or not voice.tts_disponible():
+        if not voice.tts_disponible():
+            resultado["aviso"] = "Sin AZURE_SPEECH_KEY: respuesta solo en texto."
+        return resultado
+
+    try:
+        mp3 = voice.sintetizar(r["respuesta"], stt["idioma"])
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=502, detail=f"Error en Azure AI Speech: {e}")
+    return Response(content=mp3, media_type="audio/mpeg", headers={
+        "X-Idioma": stt["idioma"],
+        "X-Transcripcion": quote(stt["texto"]),          # URL-encoded: los headers no aceptan acentos
+        "X-Respuesta": quote(r["respuesta"][:1500]),
+    })
+
+
+# Siempre al final, después de definir todas las rutas
 app.include_router(api)

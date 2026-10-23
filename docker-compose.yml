@@ -33,6 +33,7 @@ services:
       - ./docs:/code/docs:ro
       - ./chroma_data:/code/chroma_data
       - ./evals:/code/evals   # los resultados de las evals quedan en tu carpeta
+      - ./whisper_cache:/root/.cache/huggingface   # el modelo de Whisper se descarga una sola vez
     ports:
       - "8000:8000"
     depends_on:

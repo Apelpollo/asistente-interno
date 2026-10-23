@@ -105,13 +105,17 @@ def build_tools(sql_llm: BaseChatModel | None = None, embeddings: Embeddings | N
     return [buscar_documentos, consultar_base_datos]
 
 
+INSTRUCCION_INGLES = ("\n\nThe user is speaking English: write your final answer in English. "
+                      "Keep calling the tools in Spanish, because the documents and the database are in Spanish.")
+
+
 def run(pregunta: str, llm=None, sql_llm: BaseChatModel | None = None,
-        embeddings: Embeddings | None = None) -> dict:
+        embeddings: Embeddings | None = None, idioma: str = "es") -> dict:
     """Corre el agente dentro de un trace de Langfuse (si está configurado)."""
     with tracing.observar("agente", {"pregunta": pregunta},
                           tags=["agente", settings.llm_model],
                           metadata={"modelo": settings.llm_model}) as obs:
-        resultado = _run(pregunta, llm=llm, sql_llm=sql_llm, embeddings=embeddings)
+        resultado = _run(pregunta, llm=llm, sql_llm=sql_llm, embeddings=embeddings, idioma=idioma)
         if obs is not None:
             obs.update(output={"respuesta": resultado["respuesta"],
                                "herramientas": [p["herramienta"] for p in resultado["pasos"]],
@@ -121,13 +125,14 @@ def run(pregunta: str, llm=None, sql_llm: BaseChatModel | None = None,
 
 
 def _run(pregunta: str, llm=None, sql_llm: BaseChatModel | None = None,
-         embeddings: Embeddings | None = None) -> dict:
+         embeddings: Embeddings | None = None, idioma: str = "es") -> dict:
     cfg = tracing.langchain_config()  # {} si Langfuse no está configurado
     tools = build_tools(sql_llm=sql_llm, embeddings=embeddings)
     tools_by_name = {t.name: t for t in tools}
     llm = llm or rag.get_llm().bind_tools(tools)
 
-    messages = [SystemMessage(SYSTEM_PROMPT), HumanMessage(pregunta)]
+    system = SYSTEM_PROMPT + (INSTRUCCION_INGLES if idioma == "en" else "")
+    messages = [SystemMessage(system), HumanMessage(pregunta)]
     pasos: list[dict] = []
 
     recordatorios = 0

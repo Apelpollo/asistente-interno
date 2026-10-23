@@ -16,3 +16,8 @@ __pycache__/
 
 # Datos generados localmente
 chroma_data/
+whisper_cache/
+*.mp3
+*.wav
+*.m4a
+*.mp4
