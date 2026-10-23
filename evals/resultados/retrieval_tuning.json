@@ -1,0 +1,2289 @@
+{
+  "embed_model": "nomic-embed-text",
+  "preguntas": 22,
+  "actual": {
+    "estrategia": "secciones",
+    "chunk_size": 800,
+    "chunk_overlap": 100,
+    "prefijos": true,
+    "k": 6,
+    "chunks_totales": 19,
+    "hit_at_k": 1.0,
+    "mrr": 0.645,
+    "contexto_prom": 2546,
+    "fallas": []
+  },
+  "mejor": {
+    "estrategia": "secciones",
+    "chunk_size": 800,
+    "chunk_overlap": 0,
+    "prefijos": true,
+    "k": 6,
+    "chunks_totales": 19,
+    "hit_at_k": 1.0,
+    "mrr": 0.645,
+    "contexto_prom": 2546,
+    "fallas": []
+  },
+  "resultados": [
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 6,
+      "chunks_totales": 19,
+      "hit_at_k": 1.0,
+      "mrr": 0.645,
+      "contexto_prom": 2546,
+      "fallas": []
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": true,
+      "k": 6,
+      "chunks_totales": 19,
+      "hit_at_k": 1.0,
+      "mrr": 0.645,
+      "contexto_prom": 2546,
+      "fallas": []
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": true,
+      "k": 4,
+      "chunks_totales": 11,
+      "hit_at_k": 0.955,
+      "mrr": 0.735,
+      "contexto_prom": 2626,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": true,
+      "k": 6,
+      "chunks_totales": 11,
+      "hit_at_k": 0.955,
+      "mrr": 0.735,
+      "contexto_prom": 3823,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 6,
+      "chunks_totales": 10,
+      "hit_at_k": 0.955,
+      "mrr": 0.733,
+      "contexto_prom": 4052,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 4,
+      "chunks_totales": 10,
+      "hit_at_k": 0.955,
+      "mrr": 0.731,
+      "contexto_prom": 2680,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 6,
+      "chunks_totales": 10,
+      "hit_at_k": 0.955,
+      "mrr": 0.731,
+      "contexto_prom": 4015,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": false,
+      "k": 4,
+      "chunks_totales": 11,
+      "hit_at_k": 0.955,
+      "mrr": 0.693,
+      "contexto_prom": 2471,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": false,
+      "k": 6,
+      "chunks_totales": 11,
+      "hit_at_k": 0.955,
+      "mrr": 0.693,
+      "contexto_prom": 3741,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": true,
+      "k": 4,
+      "chunks_totales": 28,
+      "hit_at_k": 0.909,
+      "mrr": 0.742,
+      "contexto_prom": 1133,
+      "fallas": [
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": true,
+      "k": 6,
+      "chunks_totales": 28,
+      "hit_at_k": 0.909,
+      "mrr": 0.742,
+      "contexto_prom": 1674,
+      "fallas": [
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 4,
+      "chunks_totales": 10,
+      "hit_at_k": 0.909,
+      "mrr": 0.723,
+      "contexto_prom": 2660,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 3,
+      "chunks_totales": 10,
+      "hit_at_k": 0.909,
+      "mrr": 0.72,
+      "contexto_prom": 2001,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 6,
+      "chunks_totales": 27,
+      "hit_at_k": 0.909,
+      "mrr": 0.702,
+      "contexto_prom": 1700,
+      "fallas": [
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": false,
+      "k": 3,
+      "chunks_totales": 11,
+      "hit_at_k": 0.909,
+      "mrr": 0.682,
+      "contexto_prom": 1888,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": true,
+      "k": 6,
+      "chunks_totales": 26,
+      "hit_at_k": 0.909,
+      "mrr": 0.634,
+      "contexto_prom": 1823,
+      "fallas": [
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 4,
+      "chunks_totales": 19,
+      "hit_at_k": 0.909,
+      "mrr": 0.629,
+      "contexto_prom": 1739,
+      "fallas": [
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": true,
+      "k": 4,
+      "chunks_totales": 19,
+      "hit_at_k": 0.909,
+      "mrr": 0.629,
+      "contexto_prom": 1739,
+      "fallas": [
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 6,
+      "chunks_totales": 26,
+      "hit_at_k": 0.909,
+      "mrr": 0.619,
+      "contexto_prom": 1786,
+      "fallas": [
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": false,
+      "k": 4,
+      "chunks_totales": 28,
+      "hit_at_k": 0.864,
+      "mrr": 0.746,
+      "contexto_prom": 1139,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": false,
+      "k": 6,
+      "chunks_totales": 28,
+      "hit_at_k": 0.864,
+      "mrr": 0.746,
+      "contexto_prom": 1654,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": true,
+      "k": 3,
+      "chunks_totales": 11,
+      "hit_at_k": 0.864,
+      "mrr": 0.712,
+      "contexto_prom": 1999,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuántas quejas por la misma falla hacen que Calidad considere retener producción?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 3,
+      "chunks_totales": 10,
+      "hit_at_k": 0.864,
+      "mrr": 0.712,
+      "contexto_prom": 2002,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 2,
+      "chunks_totales": 10,
+      "hit_at_k": 0.864,
+      "mrr": 0.705,
+      "contexto_prom": 1335,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 4,
+      "chunks_totales": 27,
+      "hit_at_k": 0.864,
+      "mrr": 0.693,
+      "contexto_prom": 1159,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 4,
+      "chunks_totales": 27,
+      "hit_at_k": 0.864,
+      "mrr": 0.667,
+      "contexto_prom": 1154,
+      "fallas": [
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 6,
+      "chunks_totales": 27,
+      "hit_at_k": 0.864,
+      "mrr": 0.667,
+      "contexto_prom": 1699,
+      "fallas": [
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": true,
+      "k": 6,
+      "chunks_totales": 52,
+      "hit_at_k": 0.864,
+      "mrr": 0.664,
+      "contexto_prom": 976,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 6,
+      "chunks_totales": 52,
+      "hit_at_k": 0.864,
+      "mrr": 0.664,
+      "contexto_prom": 987,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 3,
+      "chunks_totales": 19,
+      "hit_at_k": 0.864,
+      "mrr": 0.636,
+      "contexto_prom": 1280,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": false,
+      "k": 3,
+      "chunks_totales": 19,
+      "hit_at_k": 0.864,
+      "mrr": 0.636,
+      "contexto_prom": 1280,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 4,
+      "chunks_totales": 19,
+      "hit_at_k": 0.864,
+      "mrr": 0.636,
+      "contexto_prom": 1632,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": false,
+      "k": 4,
+      "chunks_totales": 19,
+      "hit_at_k": 0.864,
+      "mrr": 0.636,
+      "contexto_prom": 1632,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 6,
+      "chunks_totales": 19,
+      "hit_at_k": 0.864,
+      "mrr": 0.636,
+      "contexto_prom": 2318,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": false,
+      "k": 6,
+      "chunks_totales": 19,
+      "hit_at_k": 0.864,
+      "mrr": 0.636,
+      "contexto_prom": 2318,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": true,
+      "k": 6,
+      "chunks_totales": 54,
+      "hit_at_k": 0.864,
+      "mrr": 0.581,
+      "contexto_prom": 948,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 6,
+      "chunks_totales": 54,
+      "hit_at_k": 0.864,
+      "mrr": 0.581,
+      "contexto_prom": 958,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": false,
+      "k": 3,
+      "chunks_totales": 28,
+      "hit_at_k": 0.818,
+      "mrr": 0.735,
+      "contexto_prom": 877,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": true,
+      "k": 3,
+      "chunks_totales": 28,
+      "hit_at_k": 0.818,
+      "mrr": 0.72,
+      "contexto_prom": 862,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 3,
+      "chunks_totales": 27,
+      "hit_at_k": 0.818,
+      "mrr": 0.682,
+      "contexto_prom": 897,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 4,
+      "chunks_totales": 52,
+      "hit_at_k": 0.818,
+      "mrr": 0.655,
+      "contexto_prom": 662,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": true,
+      "k": 4,
+      "chunks_totales": 52,
+      "hit_at_k": 0.818,
+      "mrr": 0.655,
+      "contexto_prom": 663,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 4,
+      "chunks_totales": 26,
+      "hit_at_k": 0.818,
+      "mrr": 0.625,
+      "contexto_prom": 1101,
+      "fallas": [
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 6,
+      "chunks_totales": 26,
+      "hit_at_k": 0.818,
+      "mrr": 0.625,
+      "contexto_prom": 1637,
+      "fallas": [
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": false,
+      "k": 4,
+      "chunks_totales": 26,
+      "hit_at_k": 0.818,
+      "mrr": 0.621,
+      "contexto_prom": 1128,
+      "fallas": [
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": false,
+      "k": 6,
+      "chunks_totales": 26,
+      "hit_at_k": 0.818,
+      "mrr": 0.621,
+      "contexto_prom": 1660,
+      "fallas": [
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": true,
+      "k": 4,
+      "chunks_totales": 26,
+      "hit_at_k": 0.818,
+      "mrr": 0.617,
+      "contexto_prom": 1219,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 3,
+      "chunks_totales": 19,
+      "hit_at_k": 0.818,
+      "mrr": 0.606,
+      "contexto_prom": 1272,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A partir de qué fecha empieza a correr la garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": true,
+      "k": 3,
+      "chunks_totales": 19,
+      "hit_at_k": 0.818,
+      "mrr": 0.606,
+      "contexto_prom": 1272,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A partir de qué fecha empieza a correr la garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 4,
+      "chunks_totales": 26,
+      "hit_at_k": 0.818,
+      "mrr": 0.602,
+      "contexto_prom": 1188,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 4,
+      "chunks_totales": 54,
+      "hit_at_k": 0.818,
+      "mrr": 0.572,
+      "contexto_prom": 642,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": true,
+      "k": 4,
+      "chunks_totales": 54,
+      "hit_at_k": 0.818,
+      "mrr": 0.572,
+      "contexto_prom": 647,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": false,
+      "k": 6,
+      "chunks_totales": 52,
+      "hit_at_k": 0.818,
+      "mrr": 0.547,
+      "contexto_prom": 882,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 6,
+      "chunks_totales": 52,
+      "hit_at_k": 0.818,
+      "mrr": 0.524,
+      "contexto_prom": 886,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": false,
+      "k": 6,
+      "chunks_totales": 54,
+      "hit_at_k": 0.818,
+      "mrr": 0.518,
+      "contexto_prom": 828,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 6,
+      "chunks_totales": 54,
+      "hit_at_k": 0.818,
+      "mrr": 0.495,
+      "contexto_prom": 830,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": true,
+      "k": 2,
+      "chunks_totales": 28,
+      "hit_at_k": 0.773,
+      "mrr": 0.705,
+      "contexto_prom": 580,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": true,
+      "k": 2,
+      "chunks_totales": 11,
+      "hit_at_k": 0.773,
+      "mrr": 0.682,
+      "contexto_prom": 1299,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuántas quejas por la misma falla hacen que Calidad considere retener producción?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 2,
+      "chunks_totales": 10,
+      "hit_at_k": 0.773,
+      "mrr": 0.682,
+      "contexto_prom": 1319,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 3,
+      "chunks_totales": 52,
+      "hit_at_k": 0.773,
+      "mrr": 0.644,
+      "contexto_prom": 497,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": true,
+      "k": 3,
+      "chunks_totales": 52,
+      "hit_at_k": 0.773,
+      "mrr": 0.644,
+      "contexto_prom": 497,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 3,
+      "chunks_totales": 27,
+      "hit_at_k": 0.773,
+      "mrr": 0.644,
+      "contexto_prom": 887,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 3,
+      "chunks_totales": 26,
+      "hit_at_k": 0.773,
+      "mrr": 0.614,
+      "contexto_prom": 815,
+      "fallas": [
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": true,
+      "k": 3,
+      "chunks_totales": 26,
+      "hit_at_k": 0.773,
+      "mrr": 0.606,
+      "contexto_prom": 907,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 2,
+      "chunks_totales": 19,
+      "hit_at_k": 0.773,
+      "mrr": 0.591,
+      "contexto_prom": 817,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto debe durar como mínimo la batería de un monitor de signos vitales?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A partir de qué fecha empieza a correr la garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": true,
+      "k": 2,
+      "chunks_totales": 19,
+      "hit_at_k": 0.773,
+      "mrr": 0.591,
+      "contexto_prom": 817,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto debe durar como mínimo la batería de un monitor de signos vitales?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A partir de qué fecha empieza a correr la garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": false,
+      "k": 4,
+      "chunks_totales": 52,
+      "hit_at_k": 0.773,
+      "mrr": 0.538,
+      "contexto_prom": 589,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 4,
+      "chunks_totales": 52,
+      "hit_at_k": 0.773,
+      "mrr": 0.515,
+      "contexto_prom": 588,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": false,
+      "k": 2,
+      "chunks_totales": 28,
+      "hit_at_k": 0.727,
+      "mrr": 0.705,
+      "contexto_prom": 574,
+      "fallas": [
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": false,
+      "k": 3,
+      "chunks_totales": 26,
+      "hit_at_k": 0.727,
+      "mrr": 0.598,
+      "contexto_prom": 836,
+      "fallas": [
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 2,
+      "chunks_totales": 19,
+      "hit_at_k": 0.727,
+      "mrr": 0.591,
+      "contexto_prom": 803,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto debe durar como mínimo la batería de un monitor de signos vitales?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A partir de qué fecha empieza a correr la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": false,
+      "k": 2,
+      "chunks_totales": 19,
+      "hit_at_k": 0.727,
+      "mrr": 0.591,
+      "contexto_prom": 803,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto debe durar como mínimo la batería de un monitor de signos vitales?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A partir de qué fecha empieza a correr la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": false,
+      "k": 3,
+      "chunks_totales": 54,
+      "hit_at_k": 0.727,
+      "mrr": 0.5,
+      "contexto_prom": 405,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": false,
+      "k": 4,
+      "chunks_totales": 54,
+      "hit_at_k": 0.727,
+      "mrr": 0.5,
+      "contexto_prom": 553,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 3,
+      "chunks_totales": 54,
+      "hit_at_k": 0.727,
+      "mrr": 0.477,
+      "contexto_prom": 403,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 4,
+      "chunks_totales": 54,
+      "hit_at_k": 0.727,
+      "mrr": 0.477,
+      "contexto_prom": 544,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": false,
+      "k": 1,
+      "chunks_totales": 28,
+      "hit_at_k": 0.682,
+      "mrr": 0.682,
+      "contexto_prom": 271,
+      "fallas": [
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 2,
+      "chunks_totales": 27,
+      "hit_at_k": 0.682,
+      "mrr": 0.636,
+      "contexto_prom": 590,
+      "fallas": [
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 2,
+      "chunks_totales": 52,
+      "hit_at_k": 0.682,
+      "mrr": 0.614,
+      "contexto_prom": 334,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": true,
+      "k": 2,
+      "chunks_totales": 52,
+      "hit_at_k": 0.682,
+      "mrr": 0.614,
+      "contexto_prom": 334,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 2,
+      "chunks_totales": 27,
+      "hit_at_k": 0.682,
+      "mrr": 0.614,
+      "contexto_prom": 596,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 3,
+      "chunks_totales": 26,
+      "hit_at_k": 0.682,
+      "mrr": 0.568,
+      "contexto_prom": 896,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 3,
+      "chunks_totales": 54,
+      "hit_at_k": 0.682,
+      "mrr": 0.538,
+      "contexto_prom": 493,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": true,
+      "k": 3,
+      "chunks_totales": 54,
+      "hit_at_k": 0.682,
+      "mrr": 0.538,
+      "contexto_prom": 494,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": false,
+      "k": 3,
+      "chunks_totales": 52,
+      "hit_at_k": 0.682,
+      "mrr": 0.515,
+      "contexto_prom": 444,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 3,
+      "chunks_totales": 52,
+      "hit_at_k": 0.682,
+      "mrr": 0.492,
+      "contexto_prom": 443,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": true,
+      "k": 1,
+      "chunks_totales": 28,
+      "hit_at_k": 0.636,
+      "mrr": 0.636,
+      "contexto_prom": 291,
+      "fallas": [
+        "¿Cuánto debe durar como mínimo la batería de un monitor de signos vitales?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuántas quejas por la misma falla hacen que Calidad considere retener producción?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": false,
+      "k": 2,
+      "chunks_totales": 11,
+      "hit_at_k": 0.636,
+      "mrr": 0.591,
+      "contexto_prom": 1252,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 2,
+      "chunks_totales": 26,
+      "hit_at_k": 0.636,
+      "mrr": 0.568,
+      "contexto_prom": 548,
+      "fallas": [
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": false,
+      "k": 2,
+      "chunks_totales": 26,
+      "hit_at_k": 0.636,
+      "mrr": 0.568,
+      "contexto_prom": 560,
+      "fallas": [
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 2,
+      "chunks_totales": 54,
+      "hit_at_k": 0.636,
+      "mrr": 0.523,
+      "contexto_prom": 328,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": true,
+      "k": 2,
+      "chunks_totales": 54,
+      "hit_at_k": 0.636,
+      "mrr": 0.523,
+      "contexto_prom": 329,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 1,
+      "chunks_totales": 27,
+      "hit_at_k": 0.591,
+      "mrr": 0.591,
+      "contexto_prom": 286,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 1,
+      "chunks_totales": 10,
+      "hit_at_k": 0.591,
+      "mrr": 0.591,
+      "contexto_prom": 650,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": true,
+      "k": 1,
+      "chunks_totales": 11,
+      "hit_at_k": 0.591,
+      "mrr": 0.591,
+      "contexto_prom": 666,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuántas quejas por la misma falla hacen que Calidad considere retener producción?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿Cuánto tiempo tiene Ingeniería para encontrar la causa del problema?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": true,
+      "k": 2,
+      "chunks_totales": 26,
+      "hit_at_k": 0.591,
+      "mrr": 0.545,
+      "contexto_prom": 602,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 1,
+      "chunks_totales": 52,
+      "hit_at_k": 0.545,
+      "mrr": 0.545,
+      "contexto_prom": 165,
+      "fallas": [
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": true,
+      "k": 1,
+      "chunks_totales": 52,
+      "hit_at_k": 0.545,
+      "mrr": 0.545,
+      "contexto_prom": 165,
+      "fallas": [
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 1,
+      "chunks_totales": 27,
+      "hit_at_k": 0.545,
+      "mrr": 0.545,
+      "contexto_prom": 302,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto debe durar como mínimo la batería de un monitor de signos vitales?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuántas quejas por la misma falla hacen que Calidad considere retener producción?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": false,
+      "k": 1,
+      "chunks_totales": 11,
+      "hit_at_k": 0.545,
+      "mrr": 0.545,
+      "contexto_prom": 635,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿Cuánto tiempo tiene Ingeniería para encontrar la causa del problema?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 1,
+      "chunks_totales": 10,
+      "hit_at_k": 0.545,
+      "mrr": 0.545,
+      "contexto_prom": 669,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuántas quejas por la misma falla hacen que Calidad considere retener producción?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿Cuánto tiempo tiene Ingeniería para encontrar la causa del problema?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 2,
+      "chunks_totales": 26,
+      "hit_at_k": 0.545,
+      "mrr": 0.523,
+      "contexto_prom": 594,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 1,
+      "chunks_totales": 26,
+      "hit_at_k": 0.5,
+      "mrr": 0.5,
+      "contexto_prom": 270,
+      "fallas": [
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": false,
+      "k": 1,
+      "chunks_totales": 26,
+      "hit_at_k": 0.5,
+      "mrr": 0.5,
+      "contexto_prom": 272,
+      "fallas": [
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 1,
+      "chunks_totales": 26,
+      "hit_at_k": 0.5,
+      "mrr": 0.5,
+      "contexto_prom": 304,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto debe durar como mínimo la batería de un monitor de signos vitales?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 400,
+      "chunk_overlap": 50,
+      "prefijos": true,
+      "k": 1,
+      "chunks_totales": 26,
+      "hit_at_k": 0.5,
+      "mrr": 0.5,
+      "contexto_prom": 308,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto debe durar como mínimo la batería de un monitor de signos vitales?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": false,
+      "k": 2,
+      "chunks_totales": 52,
+      "hit_at_k": 0.5,
+      "mrr": 0.455,
+      "contexto_prom": 295,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 2,
+      "chunks_totales": 52,
+      "hit_at_k": 0.5,
+      "mrr": 0.432,
+      "contexto_prom": 290,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 1,
+      "chunks_totales": 19,
+      "hit_at_k": 0.455,
+      "mrr": 0.455,
+      "contexto_prom": 384,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto debe durar como mínimo la batería de un monitor de signos vitales?",
+        "¿A qué velocidades se prueba el flujo de las bombas de infusión?",
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A partir de qué fecha empieza a correr la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuánto tiempo tiene Ingeniería para encontrar la causa del problema?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": false,
+      "k": 1,
+      "chunks_totales": 19,
+      "hit_at_k": 0.455,
+      "mrr": 0.455,
+      "contexto_prom": 384,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto debe durar como mínimo la batería de un monitor de signos vitales?",
+        "¿A qué velocidades se prueba el flujo de las bombas de infusión?",
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A partir de qué fecha empieza a correr la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuánto tiempo tiene Ingeniería para encontrar la causa del problema?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": false,
+      "k": 2,
+      "chunks_totales": 54,
+      "hit_at_k": 0.455,
+      "mrr": 0.409,
+      "contexto_prom": 267,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 2,
+      "chunks_totales": 54,
+      "hit_at_k": 0.455,
+      "mrr": 0.386,
+      "contexto_prom": 265,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": false,
+      "k": 1,
+      "chunks_totales": 52,
+      "hit_at_k": 0.409,
+      "mrr": 0.409,
+      "contexto_prom": 132,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuántas quejas por la misma falla hacen que Calidad considere retener producción?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 1,
+      "chunks_totales": 54,
+      "hit_at_k": 0.409,
+      "mrr": 0.409,
+      "contexto_prom": 166,
+      "fallas": [
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": true,
+      "k": 1,
+      "chunks_totales": 54,
+      "hit_at_k": 0.409,
+      "mrr": 0.409,
+      "contexto_prom": 167,
+      "fallas": [
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 0,
+      "prefijos": true,
+      "k": 1,
+      "chunks_totales": 19,
+      "hit_at_k": 0.409,
+      "mrr": 0.409,
+      "contexto_prom": 410,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto debe durar como mínimo la batería de un monitor de signos vitales?",
+        "¿A qué velocidades se prueba el flujo de las bombas de infusión?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A partir de qué fecha empieza a correr la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuántas quejas por la misma falla hacen que Calidad considere retener producción?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuánto tiempo tiene Ingeniería para encontrar la causa del problema?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 800,
+      "chunk_overlap": 100,
+      "prefijos": true,
+      "k": 1,
+      "chunks_totales": 19,
+      "hit_at_k": 0.409,
+      "mrr": 0.409,
+      "contexto_prom": 410,
+      "fallas": [
+        "¿Qué tolerancia de presión no invasiva deben cumplir los monitores?",
+        "¿Cuánto debe durar como mínimo la batería de un monitor de signos vitales?",
+        "¿A qué velocidades se prueba el flujo de las bombas de infusión?",
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "¿A partir de qué fecha empieza a correr la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuántas quejas por la misma falla hacen que Calidad considere retener producción?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuánto tiempo tiene Ingeniería para encontrar la causa del problema?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "secciones",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 1,
+      "chunks_totales": 52,
+      "hit_at_k": 0.364,
+      "mrr": 0.364,
+      "contexto_prom": 125,
+      "fallas": [
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuántas quejas por la misma falla hacen que Calidad considere retener producción?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 25,
+      "prefijos": false,
+      "k": 1,
+      "chunks_totales": 54,
+      "hit_at_k": 0.364,
+      "mrr": 0.364,
+      "contexto_prom": 133,
+      "fallas": [
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuántas quejas por la misma falla hacen que Calidad considere retener producción?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    },
+    {
+      "estrategia": "solo_tamano",
+      "chunk_size": 200,
+      "chunk_overlap": 0,
+      "prefijos": false,
+      "k": 1,
+      "chunks_totales": 54,
+      "hit_at_k": 0.318,
+      "mrr": 0.318,
+      "contexto_prom": 126,
+      "fallas": [
+        "¿Qué pruebas se le hacen a los cables de paciente antes de liberarlos?",
+        "¿Hasta qué tamaño de orden se revisan todas las piezas sin muestreo?",
+        "¿Qué nivel de calidad aceptable se usa en el muestreo de defectos mayores?",
+        "¿Cómo se clasifica un conector con una soldadura defectuosa?",
+        "¿Se puede corregir en la misma línea un defecto que pone en riesgo al paciente?",
+        "¿Qué margen de error se permite en la energía de un desfibrilador?",
+        "¿Cuánto cubre la garantía de la batería de un desfibrilador?",
+        "Si a un equipo se le derrama agua, ¿lo cubre la garantía?",
+        "¿Qué tan rápido se manda un equipo sustituto a un hospital?",
+        "¿Cuántas quejas por la misma falla hacen que Calidad considere retener producción?",
+        "¿En cuánto tiempo se arregla o cambia el equipo que falló en garantía?",
+        "¿Con qué porcentaje de piezas rechazadas se detiene una orden aunque los defectos no sean críticos?",
+        "¿A dónde se llevan las unidades de una orden detenida?",
+        "¿Cuándo conviene tirar una orden retenida en lugar de repararla?",
+        "¿Quién autoriza que una orden siga detenida más allá del plazo máximo?"
+      ]
+    }
+  ]
+}

@@ -56,26 +56,37 @@ def get_store(embeddings: Embeddings | None = None) -> Chroma:
 
 # ---------- Ingesta ----------
 
-def load_and_split(docs_dir: str | None = None) -> list[Document]:
+def load_and_split(
+    docs_dir: str | None = None,
+    chunk_size: int | None = None,
+    chunk_overlap: int | None = None,
+    por_secciones: bool = True,
+) -> list[Document]:
     """Parte cada documento en chunks, conservando de qué documento y sección viene.
 
     1. MarkdownHeaderTextSplitter corta por títulos (#, ##), así cada chunk sabe su sección.
     2. RecursiveCharacterTextSplitter corta secciones largas en pedazos de ~chunk_size
        caracteres con traslape, para no perder contexto en los cortes.
+
+    Los parámetros permiten probar otras configuraciones (ver evals/tune_retrieval.py);
+    sin ellos se usa lo del .env. Con por_secciones=False se omite el paso 1 (solo tamaño).
     """
     header_splitter = MarkdownHeaderTextSplitter(
         headers_to_split_on=[("#", "documento"), ("##", "seccion")],
         strip_headers=False,
     )
     size_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=settings.chunk_size,
-        chunk_overlap=settings.chunk_overlap,
+        chunk_size=chunk_size or settings.chunk_size,
+        chunk_overlap=settings.chunk_overlap if chunk_overlap is None else chunk_overlap,
     )
 
     chunks: list[Document] = []
     for path in sorted(Path(docs_dir or settings.docs_dir).glob("*.md")):
         text = path.read_text(encoding="utf-8")
-        sections = header_splitter.split_text(text)
+        if por_secciones:
+            sections = header_splitter.split_text(text)
+        else:
+            sections = [Document(page_content=text, metadata={"documento": path.stem})]
         for doc in size_splitter.split_documents(sections):
             doc.metadata["archivo"] = path.name
             doc.metadata.setdefault("documento", path.stem)
